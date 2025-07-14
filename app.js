@@ -4,6 +4,7 @@ const socketIo = require('socket.io');
 const http = require('http');
 const { Chess } = require("chess.js")
 const path = require('path');
+const PORT = process.env.PORT || 3000
 
 
 const server = http.createServer(app);
@@ -93,4 +94,6 @@ io.on("connection", (uniqueSocket) => {
 
 
 
-server.listen(3000)
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
