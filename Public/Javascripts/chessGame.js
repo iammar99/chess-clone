@@ -22,12 +22,11 @@ function handleDarkMode() {
 
 
 const changePieceColor = (theme) => {
-    let color = '#000'; 
-    if (theme === "black") color = '#595959'; 
+    let color = '#000';
+    if (theme === "black") color = '#595959';
     document.querySelectorAll('.piece.black').forEach(el => {
         el.style.color = color;
     });
-    console.log("first")
 }
 
 
@@ -132,18 +131,31 @@ const renderBoard = () => {
         boardElement.classList.remove('flipped');
         document.getElementById("playerColor").textContent = "White";
     }
+    turnIndicator();
 };
 
 
 const handleMove = (source, target) => {
+    const from = `${String.fromCharCode(97 + source.col)}${8 - source.row}`;
+    const to = `${String.fromCharCode(97 + target.col)}${8 - target.row}`;
+
+    // Get the piece from the board
+    const piece = chess.get(from);
+
     const move = {
-        from: `${String.fromCharCode(97 + source.col)}${8 - source.row}`,
-        to: `${String.fromCharCode(97 + target.col)}${8 - target.row}`,
-        promotion: 'q'
+        from,
+        to,
     };
 
+
+    if (piece && piece.type === 'p' && (to[1] === '1' || to[1] === '8')) {
+        move.promotion = 'q';
+    }
+
+
     socket.emit("move", move);
-}
+};
+
 
 
 const getPieceUnicode = (piece) => {
@@ -218,5 +230,72 @@ socket.on("left", (message) => {
     //     }
     // }).showToast();
 })
+
+
+// For Chat
+
+document.querySelector("#chatForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const message = document.querySelector("#chatInput").value;
+
+    fetch("/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message, playRole, senderId: socket.id })
+    }).then(res => {
+        if (res.ok) {
+            document.querySelector("#chatInput").value = "";
+        }
+    }).catch(err => console.error("Error sending message:", err));
+});
+
+
+
+socket.on("chat", (message) => {
+    const side = message.senderId === socket.id ? "right" : "left";
+    const msgContainer = document.getElementById("messages-container");
+    const msg = document.createElement("div");
+    msg.classList.add("message-box", side);
+
+    //   Giving notification
+    const chatIcon = document.getElementById("chatIcon");
+    if (side === "left") {
+        const redDot = document.createElement("span");
+        redDot.classList.add("red-dot");
+        redDot.textContent = "● ";
+        chatIcon.appendChild(redDot);
+    }
+
+    const messageText = document.createElement("span");
+    messageText.textContent = message.message;
+    msg.appendChild(messageText);
+
+    msgContainer.appendChild(msg);
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+});;
+
+
+
+function removeNotification() {
+    const chatDot = document.querySelector(".red-dot");
+    const chatIcon = document.getElementById("chatIcon");
+    if (chatDot) {
+        chatIcon.removeChild(chatDot);
+    }
+}
+
+const turnIndicator = () => {
+    const timer = document.querySelector('.loader');
+    const turn = chess.turn();
+    console.log(timer,playRole, turn)
+    if (turn === playRole) {
+        timer.style.opacity = '1';
+    } else {
+        timer.style.opacity = '0';
+    }
+}
+
 
 renderBoard()

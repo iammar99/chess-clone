@@ -4,8 +4,8 @@
     --headerDark: #4b4848;
     --headerLight: #d7f3f3;
     /* -------- Default Theme -------- */
-    --defaultThemeDark : #b58863;
-    --defaultThemeLight : #f0d9b5;
+    --defaultThemeDark: #b58863;
+    --defaultThemeLight: #f0d9b5;
 
 }
 
@@ -137,3 +137,4 @@ header.dark {
     justify-content: space-between;
     padding: 0px 20px;
 }
+

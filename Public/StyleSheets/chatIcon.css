@@ -1,0 +1,44 @@
+/* From Uiverse.io by elijahgummer */ 
+ul {
+  position: relative;
+  display: flex;
+  gap: 25px;
+}
+
+ul li {
+  position: relative;
+  list-style: none;
+  width: 60px;
+  height: 60px;
+  background: #fff;
+  border-radius: 60px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: 0.5s;
+}
+
+ul li .icon {
+  color: #777;
+  font-size: 1.75em;
+  transition: 0.5s;
+  transition-delay: 0.25s;
+}
+
+
+ul li span {
+  position: absolute;
+}
+
+/* Notification */
+
+
+span.red-dot {
+    color: red;
+    font-size: 27px;
+    position: absolute;
+    right: 0;
+    bottom: 37px;
+}

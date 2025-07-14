@@ -10,16 +10,29 @@ const PORT = process.env.PORT || 3000
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const chess = new Chess();
+const chess = new Chess()
 
 const players = {};
 let currentPlayer = "w";
 
+app.use(express.urlencoded({ extended: true })); 
+app.use(express.json()); 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, "public")))
 
+
+
 app.get('/', (req, res) => {
     res.render('index');
+});
+
+app.post('/chat', (req, res) => {
+    const message = req.body;
+
+    
+    io.emit('chat', message,players);
+
+    res.status(200).json({ success: true });
 });
 
 
@@ -45,7 +58,6 @@ io.on("connection", (uniqueSocket) => {
 
     uniqueSocket.on("move", (move) => {
         try {
-            console.log(chess.turn(), currentPlayer)
             if (chess.turn() !== currentPlayer) {
                 uniqueSocket.emit("error", "It's not your turn");
                 return;
@@ -95,5 +107,5 @@ io.on("connection", (uniqueSocket) => {
 
 
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
