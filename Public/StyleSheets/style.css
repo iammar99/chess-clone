@@ -1,0 +1,139 @@
+:root {
+    --lightColor: azure;
+    --darkColor: #6d6868;
+    --headerDark: #4b4848;
+    --headerLight: #d7f3f3;
+    /* -------- Default Theme -------- */
+    --defaultThemeDark : #b58863;
+    --defaultThemeLight : #f0d9b5;
+
+}
+
+/* Main */
+
+body {
+    height: 100vh;
+    background-color: var(--lightColor);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+main {
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.player {
+    font-size: 22px;
+    font-weight: 500;
+    text-align: center;
+    margin: 13px 0px;
+}
+
+
+/* Board */
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-rows: repeat(8, minmax(0, 1fr));
+    width: 400px;
+    height: 400px;
+    transform: rotate(0deg);
+    margin: auto;
+}
+
+
+/* Square */
+
+
+.piece.white {
+    color: white;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 1));
+}
+
+.piece.black {
+    color: black;
+}
+
+.flipped {
+    transform: rotate(180deg);
+}
+
+.square {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.square.light {
+    background-color: var(--defaultThemeLight);
+}
+
+.square.dark {
+    background-color: var(--defaultThemeDark);
+}
+
+.piece {
+    font-size: 36px;
+    cursor: pointer;
+}
+
+.piece.draggable {
+    cursor: grab;
+}
+
+.dragging {
+    opacity: 0.5;
+}
+
+/* Rotate pieces for black player */
+.flipped .piece {
+    transform: rotate(180deg);
+}
+
+
+
+/* Header */
+
+header {
+    background: var(--headerLight);
+    width: 100%;
+    height: 61px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px;
+}
+
+
+
+
+
+
+/* -------------------------- Dark Mode -------------------------- */
+
+
+body.dark {
+    height: 100vh;
+    background-color: var(--darkColor);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+header.dark {
+    background: var(--headerDark);
+    width: 100%;
+    height: 61px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px;
+}
